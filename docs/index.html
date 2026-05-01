@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Nomen Nescio — AY 2026-27 Tax Computation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ========================================================
+   Statement of Liability · Editorial / Private Wealth
+   Palette: warm cream paper · oxblood ink · burnished gold
+   Type:    Fraunces (display) + Plus Jakarta Sans (body)
+            + JetBrains Mono (numerals)
+   ======================================================== */
+:root{
+  --paper:    #ffffff;     
+  --paper-2:  #fafaf8;     
+  --paper-3:  #ffffff;     
+  --ink:      #1a1a1a;     
+  --ink-2:    #4a4a4a;     
+  --ink-3:    #888888;     
+  --rule:     #e5e5e2;     
+  --rule-2:   #f0efeb;     
+  --oxblood:  #7a2424;     
+  --gold:     #a07a3c;     
+  --forest:   #2d5a3c;     
+  --card:     var(--paper);
+  --border:   var(--rule);
+  --muted:    var(--ink-3);
+  --chip:     #f5f3ee;
+  --chip-ink: var(--ink-2);
+  --shadow-card: 0 1px 2px rgba(0,0,0,.03);
+
+  --serif:  "Fraunces", "Cormorant Garamond", Georgia, serif;
+  --sans:   "Plus Jakarta Sans", system-ui, sans-serif;
+  --mono:   "JetBrains Mono", ui-monospace, monospace;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+.wrap{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:48px 28px 96px}
+
+/* ── editorial masthead ───────────────────────────────── */
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap;margin-bottom:46px;padding-bottom:20px;border-bottom:1px solid var(--rule);position:relative}
+header::after{content:"❦";position:absolute;left:50%;bottom:-12px;transform:translateX(-50%);background:var(--paper);padding:0 14px;color:var(--gold);font-size:18px;line-height:1}
+.brand h1{font-family:var(--serif);font-weight:400;font-size:42px;line-height:.95;margin:0 0 10px;letter-spacing:-.02em;color:var(--ink);font-variation-settings:"opsz" 144,"SOFT" 30}
+.brand h1 em{font-style:italic;color:var(--oxblood);font-variation-settings:"opsz" 144,"SOFT" 80}
+.brand .sub{color:var(--ink-2);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+.brand .sub strong{color:var(--oxblood);font-weight:600;letter-spacing:.18em}
+.identity{text-align:right;font-size:11px;color:var(--ink-3);font-family:var(--mono);letter-spacing:.02em;border-left:1px solid var(--rule);padding-left:18px}
+.identity div{margin-bottom:3px}
+.identity strong{color:var(--ink);font-weight:500}
+.identity .lbl{color:var(--ink-3);text-transform:uppercase;font-size:9.5px;letter-spacing:.12em;display:inline-block;width:54px}
+
+/* ── cards ───────────────────────────────────────────── */
+.card{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:24px 26px;margin-bottom:16px;box-shadow:var(--shadow-card);position:relative}
+.card h2{font-family:var(--serif);font-size:22px;font-weight:400;margin:0 0 18px;display:flex;align-items:center;gap:10px;letter-spacing:-.01em;color:var(--ink);font-variation-settings:"opsz" 24,"SOFT" 50;line-height:1.2}
+.card h3{font-family:var(--sans);font-size:10.5px;font-weight:600;color:var(--oxblood);margin:22px 0 10px;text-transform:uppercase;letter-spacing:.18em;display:flex;align-items:center;gap:8px}
+.card h3::before{content:"";width:14px;height:1px;background:var(--gold)}
+.card.collapsible{padding:0}
+.card.collapsible>summary{padding:20px 26px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;font-family:var(--serif);font-weight:400;font-size:20px;gap:10px;color:var(--ink);font-variation-settings:"opsz" 24}
+.card.collapsible>summary::after{content:"+";font-size:22px;color:var(--gold);transition:transform .25s;display:inline-block;flex-shrink:0;font-family:var(--serif);font-weight:300;width:24px;height:24px;border:1px solid var(--rule);border-radius:50%;line-height:22px;text-align:center}
+details.card[open]>summary::after{transform:rotate(45deg);background:var(--oxblood);color:#fff;border-color:var(--oxblood)}
+.card.collapsible>summary::-webkit-details-marker{display:none}
+.card.collapsible>summary:hover{background:rgba(168,118,52,.05)}
+.card.collapsible>.body{padding:0 26px 24px;border-top:1px dotted var(--rule-2);padding-top:18px;margin-top:0}
+
+/* ── key-value pairs ─────────────────────────────────── */
+.kv{display:grid;grid-template-columns:1fr auto;gap:8px 18px;align-items:baseline;font-size:13.5px}
+.kv .k{color:var(--ink-2);font-family:var(--sans)}
+.kv .v{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;color:var(--ink);font-size:13px;font-weight:500;letter-spacing:-.01em}
+.kv .k.bold{color:var(--ink);font-weight:600}
+.kv .v.bold{color:var(--ink);font-weight:700;font-family:var(--sans);font-size:15px;letter-spacing:-.02em}
+.kv hr{grid-column:1/-1;border:none;border-top:1px solid var(--rule-2);margin:8px 0}
+
+/* ── statement of liability (sumcard) ────────────────── */
+.sumcard{background:var(--paper-3);color:var(--ink);border:1px solid var(--gold);border-radius:2px;padding:34px 32px 30px;margin-bottom:36px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;box-shadow:0 1px 0 rgba(110,80,30,.06),0 12px 36px -16px rgba(110,80,30,.18)}
+.sumcard::before{content:"STATEMENT  OF  LIABILITY";position:absolute;top:-9px;left:24px;background:var(--paper);padding:0 12px;font-family:var(--sans);font-size:9.5px;letter-spacing:.32em;color:var(--gold);font-weight:600}
+.sumcard::after{content:"";position:absolute;inset:6px;border:1px solid var(--rule-2);pointer-events:none;border-radius:1px}
+.sumcard .item{position:relative;padding:0 24px}
+.sumcard .item:not(:last-child)::after{content:"";position:absolute;right:0;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,transparent,var(--rule),transparent)}
+.sumcard .item:first-child{padding-left:0}
+.sumcard .item:last-child{padding-right:0}
+.sumcard .item .label{font-size:9.5px;text-transform:uppercase;letter-spacing:.22em;color:var(--ink-3);margin-bottom:10px;font-weight:600;font-family:var(--sans)}
+.sumcard .item .value{font-family:var(--sans);font-weight:600;font-size:32px;color:var(--ink);line-height:1.05;letter-spacing:-.03em;font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"lnum","tnum"}
+.sumcard .item .value::first-letter{font-style:italic}
+.sumcard .item .sub{font-size:10.5px;color:var(--ink-3);margin-top:8px;letter-spacing:.04em;font-style:italic;font-family:var(--serif)}
+.sumcard .item.payable .value{color:var(--oxblood)}
+.sumcard .item.refund .value{color:var(--forest)}
+
+/* ── grids ───────────────────────────────────────────── */
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.row,.sumcard{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.row,.sumcard{grid-template-columns:1fr}.sumcard .item:not(:last-child)::after{display:none}.sumcard .item{padding:14px 0;border-bottom:1px dotted var(--rule)}.brand h1{font-size:34px}}
+
+/* ── chips ───────────────────────────────────────────── */
+.chip{display:inline-block;background:var(--chip);color:var(--chip-ink);padding:3px 10px;border-radius:2px;font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;border:1px solid var(--rule-2)}
+.chip.good{background:#dceadc;color:#1f3d28;border-color:#a8c5b0}
+.chip.bad{background:#f0d9d9;color:#5a1414;border-color:#c89e9e}
+.chip.warn{background:#f0e0b8;color:#6b4d18;border-color:#d6b878}
+
+/* ── tables ──────────────────────────────────────────── */
+table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums;font-family:var(--sans)}
+th{text-align:left;font-weight:600;color:var(--oxblood);font-size:9.5px;text-transform:uppercase;letter-spacing:.16em;padding:10px 10px;border-bottom:2px solid var(--rule);border-top:1px solid var(--rule);font-family:var(--sans)}
+td{padding:11px 10px;border-bottom:1px dotted var(--rule-2);color:var(--ink-2)}
+td.r,th.r{text-align:right}
+td.r{font-family:var(--mono);font-weight:500;color:var(--ink)}
+tr:last-child td{border-bottom:1px solid var(--rule)}
+table.totals tr:last-child td{font-weight:700;font-family:var(--sans);font-size:14px;border-top:2px double var(--ink);border-bottom:none;padding-top:14px;color:var(--ink);letter-spacing:-.01em}
+table.totals tr:last-child td.r{font-family:var(--sans);font-weight:700;letter-spacing:-.02em}
+
+/* ── slab waterfall ──────────────────────────────────── */
+.slabbar{display:flex;height:34px;border-radius:2px;overflow:hidden;margin:10px 0 6px;border:1px solid var(--rule);box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.slabbar .seg{display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:600;letter-spacing:.04em;font-family:var(--mono);text-shadow:0 1px 0 rgba(0,0,0,.15)}
+
+/* ── formula blocks ──────────────────────────────────── */
+.formula-block{display:block;background:var(--paper-3);border-left:2px solid var(--gold);padding:14px 18px;margin:12px 0;font-family:var(--mono);font-size:12.5px;color:var(--ink);border-radius:0;line-height:1.9;white-space:pre-wrap;letter-spacing:-.005em;border-top:1px dotted var(--rule-2);border-right:1px dotted var(--rule-2);border-bottom:1px dotted var(--rule-2)}
+.formula-block .res{color:var(--forest);font-weight:700}
+
+/* ── notes ───────────────────────────────────────────── */
+.foot{font-size:11.5px;color:var(--ink-3);margin-top:10px;line-height:1.65;font-style:italic;font-family:var(--serif);font-variation-settings:"opsz" 11}
+.note{background:#fbf2d8;border-left:2px solid var(--gold);padding:13px 16px;border-radius:0;font-size:13px;color:#5a4318;margin:14px 0;font-family:var(--sans);line-height:1.6}
+.note.info{background:#e6e9ef;border-left-color:#384b7a;color:#1f2e54}
+
+/* ── inputs ──────────────────────────────────────────── */
+input[type=date]{font:inherit;padding:9px 12px;border:1px solid var(--rule);border-radius:2px;background:#fff;font-variant-numeric:tabular-nums;width:100%;color:var(--ink);font-family:var(--mono);font-size:13px;}
+input[type=date]:focus{outline:none;border-color:var(--oxblood);box-shadow:0 0 0 3px rgba(110,29,31,.10)}
+label.field{display:block;margin-bottom:12px}
+label.field>span{display:block;font-size:9.5px;color:var(--ink-3);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.16em}
+
+.text-good{color:var(--forest);font-weight:600}
+.text-bad{color:var(--oxblood);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand">
+    <h1>Income Tax <em>Computation</em></h1>
+    <div class="sub">Assessment Year <strong>2026—27</strong> &nbsp;·&nbsp; Financial Year <strong>2025—26</strong> &nbsp;·&nbsp; ITR-2 &nbsp;·&nbsp; New Regime u/s 115BAC</div>
+  </div>
+  <div class="identity">
+    <div><span class="lbl">Name</span><strong>Nomen Nescio</strong></div>
+    <div><span class="lbl">PAN</span><strong>ABCDP1234E</strong></div>
+    <div><span class="lbl">Status</span>Resident · ROR</div>
+  </div>
+</header>
+
+<!-- ===================== COMPUTATION ===================== -->
+  <div class="sumcard">
+    <div class="item"><div class="label">Total Income</div><div class="value">₹30,27,000</div><div class="sub">Sec 288A rounded</div></div>
+    <div class="item"><div class="label">Total Tax</div><div class="value">₹4,53,414</div><div class="sub">Slab + CG + VDA + Cess</div></div>
+    <div class="item"><div class="label">Less: TDS</div><div class="value">₹3,83,800</div><div class="sub">Salary + Crypto + Interest</div></div>
+    <div class="item payable"><div class="label">Net Payable</div><div class="value" id="s-payable">₹73,614</div><div class="sub" id="s-payable-sub">incl. 234B+234C</div></div>
+  </div>
+
+  <div class="card">
+    <h2>Tax Summary <span class="chip">New Regime</span></h2>
+    <table class="totals">
+      <tr><td>Salary (after Standard Deduction)</td><td class="r">₹24,50,000</td></tr>
+      <tr><td>Income from House Property</td><td class="r">₹1,72,000</td></tr>
+      <tr><td>Income from Other Sources</td><td class="r">₹60,000</td></tr>
+      <tr><td>Short-term Capital Gains u/s 111A (20%)</td><td class="r">₹1,20,000</td></tr>
+      <tr><td>Long-term Capital Gains u/s 112A (12.5% over ₹1.25L)</td><td class="r">₹1,40,000</td></tr>
+      <tr><td>Income from VDA (Crypto @ 30%)</td><td class="r">₹85,000</td></tr>
+      <tr><td><strong>Gross Total Income</strong></td><td class="r"><strong>30,27,000</strong></td></tr>
+      <tr><td>Less: Deductions u/Chapter VI-A</td><td class="r">0</td></tr>
+      <tr><td><strong>Total Income (Taxable)</strong></td><td class="r"><strong>30,27,000</strong></td></tr>
+    </table>
+  </div>
+
+  <details class="card collapsible" open>
+    <summary>Salary Income · ₹25,25,000 gross</summary>
+    <div class="body">
+      <h3>Section 17(1) — Salary</h3>
+      <div class="kv">
+        <span class="k">Basic Salary</span><span class="v">₹12,00,000</span>
+        <span class="k">Special Allowances</span><span class="v">₹13,25,000</span>
+        <hr>
+        <span class="k bold">Gross Salary</span><span class="v bold">₹25,25,000</span>
+        <span class="k">Less: Standard Deduction u/s 16(ia)</span><span class="v">(₹75,000)</span>
+        <span class="k bold">Net Taxable Salary</span><span class="v bold">₹24,50,000</span>
+      </div>
+    </div>
+  </details>
+
+  <details class="card collapsible">
+    <summary>Income from House Property · Let-out · ₹1,72,000</summary>
+    <div class="body">
+      <h3>Property Details (Let-out)</h3>
+      <div class="kv">
+        <span class="k">Gross Annual Rent Received</span><span class="v">₹4,80,000</span>
+        <span class="k">Less: Municipal Taxes Paid</span><span class="v">(₹20,000)</span>
+        <span class="k bold">Net Annual Value (NAV)</span><span class="v bold">₹4,60,000</span>
+        <span class="k">Less: Standard Deduction @ 30% of NAV</span><span class="v">(₹1,38,000)</span>
+        <span class="k">Less: Interest on Home Loan u/s 24(b)</span><span class="v">(₹1,50,000)</span>
+        <hr>
+        <span class="k bold">Income from House Property</span><span class="v bold">₹1,72,000</span>
+      </div>
+      <div class="note info">Home loan interest deduction is fully allowed for let-out property under the New Regime.</div>
+    </div>
+  </details>
+  
+  <details class="card collapsible">
+    <summary>Capital Gains & VDA · CG ₹2,60,000 · VDA ₹85,000</summary>
+    <div class="body">
+      <h3>STCG u/s 111A — Listed Equity (20%)</h3>
+      <table>
+        <tr><th>Instrument</th><th>Sale Value ₹</th><th>Cost ₹</th><th class="r">Gain/Loss ₹</th></tr>
+        <tr><td>Zerodha STCG (Consolidated)</td><td>₹8,20,000</td><td>₹7,00,000</td><td class="r text-good">+₹1,20,000</td></tr>
+        <tr><td colspan="3"><strong>Net 111A STCG</strong></td><td class="r"><strong>1,20,000</strong></td></tr>
+      </table>
+
+      <h3>LTCG u/s 112A — Listed Equity (12.5% over ₹1.25L)</h3>
+      <table>
+        <tr><th>Instrument</th><th>Sale Value ₹</th><th>Cost ₹</th><th class="r">Gain/Loss ₹</th></tr>
+        <tr><td>Zerodha LTCG (Consolidated)</td><td>₹6,40,000</td><td>₹5,00,000</td><td class="r text-good">+₹1,40,000</td></tr>
+        <tr><td colspan="3"><strong>Net 112A LTCG</strong></td><td class="r"><strong>1,40,000</strong></td></tr>
+      </table>
+      <div class="foot">Taxable 112A Gain = ₹1,40,000 - Exemption of ₹1,25,000 = <strong>₹15,000</strong>.</div>
+
+      <h3>Income from VDA (Crypto) u/s 115BBH (30%)</h3>
+      <table>
+        <tr><th>Instrument</th><th>Sale Value ₹</th><th>Cost ₹</th><th class="r">Gain/Loss ₹</th></tr>
+        <tr><td>Bitcoin (WazirX)</td><td>₹2,00,000</td><td>₹1,15,000</td><td class="r text-good">+₹85,000</td></tr>
+        <tr><td colspan="3"><strong>Net VDA Income</strong></td><td class="r"><strong>85,000</strong></td></tr>
+      </table>
+      <div class="note">VDA losses cannot be set off against any other income, nor carried forward. Taxed at flat 30% plus cess.</div>
+    </div>
+  </details>
+
+  <details class="card collapsible">
+    <summary>Income from Other Sources · ₹60,000</summary>
+    <div class="body">
+      <h3>Interest & Dividends</h3>
+      <div class="kv">
+        <span class="k">Savings Account Interest (ICICI Bank)</span><span class="v">₹42,000</span>
+        <span class="k">Indian Dividend Income (Listed Equities)</span><span class="v">₹18,000</span>
+        <hr>
+        <span class="k bold">Total Other Sources</span><span class="v bold">₹60,000</span>
+      </div>
+    </div>
+  </details>
+
+  <details class="card collapsible" open>
+    <summary>Tax Computation · ₹4,53,414</summary>
+    <div class="body">
+      <h3>Slab applied to ₹26,82,000 (Salary + HP + OS)</h3>
+      <div class="slabbar">
+        <div class="seg" style="background:#cbd5e1;width:14%">₹4 L</div>
+        <div class="seg" style="background:#a7f3d0;width:14%">₹4 L</div>
+        <div class="seg" style="background:#86efac;width:14%">₹4 L</div>
+        <div class="seg" style="background:#fde68a;width:14%">₹4 L</div>
+        <div class="seg" style="background:#fdba74;width:14%">₹4 L</div>
+        <div class="seg" style="background:#fda4af;width:14%">₹4 L</div>
+        <div class="seg" style="background:#fb7185;width:16%">₹2.8L @ 30%</div>
+      </div>
+      <table>
+        <tr><th>Slab</th><th>Rate</th><th class="r">Tax (₹)</th></tr>
+        <tr><td>₹0 – 4 L</td><td>0%</td><td class="r">0</td></tr>
+        <tr><td>₹4 – 8 L</td><td>5%</td><td class="r">₹20,000</td></tr>
+        <tr><td>₹8 – 12 L</td><td>10%</td><td class="r">₹40,000</td></tr>
+        <tr><td>₹12 – 16 L</td><td>15%</td><td class="r">₹60,000</td></tr>
+        <tr><td>₹16 – 20 L</td><td>20%</td><td class="r">₹80,000</td></tr>
+        <tr><td>₹20 – 24 L</td><td>25%</td><td class="r">₹1,00,000</td></tr>
+        <tr><td>Above ₹24 L · ₹2,82,000 @ 30%</td><td>30%</td><td class="r">₹84,600</td></tr>
+        <tr><td><strong>Slab Tax</strong></td><td></td><td class="r"><strong>3,84,600</strong></td></tr>
+      </table>
+
+      <div class="kv" style="margin-top:14px">
+        <span class="k">+ STCG u/s 111A · ₹1,20,000 × 20%</span><span class="v">₹24,000</span>
+        <span class="k">+ LTCG u/s 112A · ₹15,000 × 12.5%</span><span class="v">₹1,875</span>
+        <span class="k">+ VDA (Crypto) u/s 115BBH · ₹85,000 × 30%</span><span class="v">₹25,500</span>
+        <span class="k">Tax before Cess</span><span class="v">₹4,35,975</span>
+        <span class="k">+ Health &amp; Education Cess @ 4%</span><span class="v">₹17,439</span>
+        <hr>
+        <span class="k bold">TOTAL TAX LIABILITY</span><span class="v bold">₹4,53,414</span>
+      </div>
+    </div>
+  </details>
+
+  <details class="card collapsible">
+    <summary>TDS &amp; Credit Reconciliation · ₹3,83,800</summary>
+    <div class="body">
+      <table>
+        <tr><th>Source</th><th>Certificate Reference</th><th class="r">Claimed ₹</th></tr>
+        <tr><td>TDS u/s 192 — Salary</td><td>Form 16</td><td class="r"><strong>3,80,000</strong></td></tr>
+        <tr><td>TDS u/s 194S — Crypto / VDA Sale</td><td>WazirX Annual Statement</td><td class="r"><strong>2,000</strong></td></tr>
+        <tr><td>TDS u/s 194K — Dividend</td><td>Form 26AS</td><td class="r"><strong>1,800</strong></td></tr>
+        <tr><td><strong>TOTAL CREDIT</strong></td><td></td><td class="r"><strong>3,83,800</strong></td></tr>
+      </table>
+    </div>
+  </details>
+
+  <details class="card collapsible" open>
+    <summary>Final Payable · ₹<span id="final-payable">73,614</span></summary>
+    <div class="body">
+      <label class="field" style="max-width:280px">
+        <span>Target filing/payment date</span>
+        <input type="date" id="target-date" value="2026-07-31" min="2026-04-01" max="2027-03-31">
+      </label>
+      <table class="totals">
+        <tr><td>Total Tax Liability</td><td class="r">₹4,53,414</td></tr>
+        <tr><td>Less: TDS credits</td><td class="r">(₹3,83,800)</td></tr>
+        <tr><td><strong>Net Tax before Interest</strong></td><td class="r"><strong>₹69,614</strong></td></tr>
+        <tr><td>+ Interest u/s 234B (1% per month)</td><td class="r" id="i-234b">₹2,784</td></tr>
+        <tr><td>+ Interest u/s 234C (Shortfall of Advance Tax)</td><td class="r">₹1,216</td></tr>
+        <tr><td><strong>TOTAL PAYABLE</strong></td><td class="r" id="i-total"><strong>₹73,614</strong></td></tr>
+      </table>
+
+      <div class="formula-block" style="margin-top:10px">
+234B: I<sub>234B</sub> = ⌊Net Tax / 100⌋ × 100 × 1% × n
+       where n = months from 1-Apr-AY₊₁ to date of payment (rounding up partial months)
+       = ⌊69,614 / 100⌋ × 100 × 0.01 × <span id="n-months">4</span> = 69,600 × <span id="n-rate">0.04</span> = <span class="res" id="res-234b">₹2,784</span></div>
+    </div>
+  </details>
+  
+  <details class="card collapsible">
+    <summary>Reconciliations &amp; Notes</summary>
+    <div class="body">
+      <ul style="margin:0;padding-left:18px;color:var(--muted);font-size:13px;line-height:1.8">
+        <li><strong>Form 16 cross-check:</strong> Salary TDS reconciled exactly with employer certificates.</li>
+        <li><strong>Schedule AL skipped:</strong> Total Income of ₹30,27,000 is below the ₹50 Lakh threshold.</li>
+        <li><strong>VDA Set-off:</strong> Crypto gains are ring-fenced. The 30% tax applies flat to the ₹85,000 gain with no standard deductions allowed.</li>
+      </ul>
+    </div>
+  </details>
+
+</div>
+
+<script>
+const fmt = (n) => n.toLocaleString('en-IN');
+const dt = document.getElementById('target-date');
+
+function recalc234B(){
+  const target = new Date(dt.value);
+  const start = new Date('2026-04-01');
+  if(isNaN(target) || target < start) {
+      document.getElementById('i-234b').textContent = '0';
+      updatePayable(0);
+      return;
+  }
+  let months = (target.getFullYear() - start.getFullYear())*12 + (target.getMonth() - start.getMonth()) + 1;
+  months = Math.max(1, months);
+  
+  const base = 69600; // ⌊69,614 / 100⌋ * 100
+  const interest = Math.round(base * 0.01 * months);
+  
+  document.getElementById('i-234b').textContent = '₹' + fmt(interest);
+  document.getElementById('n-months').textContent = months;
+  document.getElementById('n-rate').textContent = (months * 0.01).toFixed(2);
+  document.getElementById('res-234b').textContent = '₹' + fmt(interest);
+  updatePayable(interest);
+}
+
+function updatePayable(i234b){
+  const i234c = 1216; // fixed mock
+  const netTax = 69614;
+  const total = netTax + i234b + i234c;
+  document.getElementById('i-total').innerHTML = '<strong>' + fmt(total) + '</strong>';
+  document.getElementById('s-payable').textContent = '₹' + fmt(total);
+  document.getElementById('final-payable').textContent = fmt(total);
+}
+
+dt.addEventListener('input', recalc234B);
+recalc234B();
+</script>
+</body>
+</html>
